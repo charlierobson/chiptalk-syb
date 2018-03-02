@@ -12,12 +12,14 @@ namespace SYB
         private readonly RawViewForm rawViewForm;
         private string _tx2alPath;
         private string _serSendPath;
+        private string _comPort = "COM4";
 
         public Form1()
         {
             InitializeComponent();
             rawViewForm = new RawViewForm();
-            rawViewForm.Log("SYB V1.0 Online");
+            rawViewForm.Log("SYB V1.0 Online\n");
+            rawViewForm.Log("To change COM port type its name & click Send. Port is currently " + _comPort);
 
             var rootPath = Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location) ?? "";
 
@@ -38,6 +40,13 @@ namespace SYB
         private void buttonSend_Click(object sender, EventArgs e)
         {
             var englishText = textBox1.Text.Trim();
+            if (englishText.Length == 4 && englishText.StartsWith("COM"))
+            {
+                _comPort = englishText;
+                rawViewForm.Log("COM port is now " + _comPort);
+                return;
+            }
+
             englishText = englishText.Replace("\r\n", " ");
             if (string.IsNullOrEmpty(englishText)) return;
 
@@ -61,7 +70,7 @@ namespace SYB
                 CreateNoWindow = true,
                 FileName = _serSendPath,
                 UseShellExecute = false,
-                Arguments = destFile + " COM4",
+                Arguments = destFile + " " + _comPort,
                 RedirectStandardOutput = true
             };
 

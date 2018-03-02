@@ -25,5 +25,10 @@ namespace SYB
             _sb.AppendLine(BitConverter.ToString(bytes).Replace("-", " "));
             textBox1.Text = _sb.ToString();
         }
+
+        private void textBox1_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            e.Handled = true;
+        }
     }
 }
